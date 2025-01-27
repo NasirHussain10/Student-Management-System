@@ -1,6 +1,29 @@
 #include <iostream>
 using namespace std;
 
+// ======================= Student Management Functions =======================
+// Function to add a new student
+void addStudent(vector<Student>& students) {
+    string name = getValidName();
+
+    cout << "Enter RollNo of Student: ";
+    string rollNo;
+    cin >> rollNo;
+
+    // Check for duplicate roll number
+    auto it = find_if(students.begin(), students.end(), [&rollNo](const Student& s) {
+        return toLower(s.getRollNo()) == toLower(rollNo);
+    });
+    if (it != students.end()) {
+        cout << "Error: A student with this RollNo already exists.\n";
+        return;
+    }
+
+    float cgpa = getValidCGPA();
+    students.emplace_back(name, rollNo, cgpa);
+    cout << "Student added successfully!\n";
+}
+
 // Function to get a valid menu choice from the user
 int getValidMenuChoice() {
     int choice;
@@ -31,7 +54,7 @@ int getValidMenuChoice() {
         
         int choice = getValidMenuChoice();
         switch (choice) {
-            case 1:  break;
+            case 1: addStudent(students); break;
             case 2:  break;
             case 3:  break;
             case 4:  break;
