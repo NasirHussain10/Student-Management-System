@@ -49,6 +49,21 @@ string getValidName() {
     }
 }
 
+// Function to get a valid CGPA from the user
+float getValidCGPA() {
+    float cgpa;
+    while (true) {
+        cout << "Enter CGPA of Student (0.0 - 4.0): ";
+        cin >> cgpa;
+        if (!cin.fail() && cgpa >= 0.0 && cgpa <= 4.0) {
+            return cgpa;
+        }
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Invalid input! CGPA must be a number between 0.0 and 4.0. Please try again.\n";
+    }
+}
+
 // ======================= Student Management Functions =======================
 // General search function
 void searchStudents(const vector<Student>& students, const string& searchTerm, const string& searchBy) {
