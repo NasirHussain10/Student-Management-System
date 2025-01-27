@@ -121,6 +121,29 @@ void displayAll(const vector<Student>& students) {
     }
 }
 
+// Function to remove a student
+void removeStudent(vector<Student>& students) {
+    cout << "Enter RollNo of Student to Remove: ";
+    string rollNo;
+    cin >> rollNo;
+
+    auto it = find_if(students.begin(), students.end(), [&rollNo](const Student& s) {
+        return toLower(s.getRollNo()) == toLower(rollNo);
+    });
+
+    if (it != students.end()) {
+        char confirm;
+        cout << "Are you sure you want to remove this student? (Y/N): ";
+        cin >> confirm;
+        if (toupper(confirm) == 'Y') {
+            students.erase(it);
+            cout << "Student removed successfully.\n";
+        }
+    } else {
+        cout << "Student not found.\n";
+    }
+}
+
 // Function to get a valid menu choice from the user
 int getValidMenuChoice() {
     int choice;
@@ -157,7 +180,7 @@ int getValidMenuChoice() {
             case 4: searchByCGPA(students); break;
             case 5: updateStudent(students); break;
             case 6: displayAll(students); break;
-            case 7:  break;
+            case 7: removeStudent(students); break;
             case 8: exit = true; break;
         }
 
