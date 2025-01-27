@@ -43,6 +43,21 @@ void searchByRollNo(const vector<Student>& students) {
 
     searchStudents(students, toLower(trim(rollNo)), "rollno");
 }
+
+// Function to search students by CGPA
+void searchByCGPA(const vector<Student>& students) {
+    float cgpa = getValidCGPA();
+    bool found = false;
+    for (const auto& student : students) {
+        if (student.getCGPA() == cgpa) {
+            cout << student.toString() << endl;
+            found = true;
+        }
+    }
+    if (!found) {
+        cout << "No students found with CGPA: " << cgpa << endl;
+    }
+}
 // Function to get a valid menu choice from the user
 int getValidMenuChoice() {
     int choice;
@@ -76,7 +91,7 @@ int getValidMenuChoice() {
             case 1: addStudent(students); break;
             case 2: searchByName(students); break;
             case 3: searchByRollNo(students); break;
-            case 4:  break;
+            case 4: searchByCGPA(students); break;
             case 5:  break;
             case 6:  break;
             case 7:  break;
