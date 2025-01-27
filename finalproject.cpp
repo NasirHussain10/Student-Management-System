@@ -64,6 +64,22 @@ float getValidCGPA() {
     }
 }
 
+// Function to get a valid menu choice from the user
+int getValidMenuChoice() {
+    int choice;
+    while (true) {
+        cout << "Enter Choice: ";
+        cin >> choice;
+        if (!cin.fail() && choice >= 1 && choice <= 8) {
+            return choice;
+        }
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Invalid choice! Please enter a number between 1 and 8.\n";
+    }
+}
+
+
 // ======================= Student Management Functions =======================
 // General search function
 void searchStudents(const vector<Student>& students, const string& searchTerm, const string& searchBy) {
@@ -218,21 +234,6 @@ void removeStudent(vector<Student>& students) {
         }
     } else {
         cout << "Student not found.\n";
-    }
-}
-
-// Function to get a valid menu choice from the user
-int getValidMenuChoice() {
-    int choice;
-    while (true) {
-        cout << "Enter Choice: ";
-        cin >> choice;
-        if (!cin.fail() && choice >= 1 && choice <= 8) {
-            return choice;
-        }
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Invalid choice! Please enter a number between 1 and 8.\n";
     }
 }
 
