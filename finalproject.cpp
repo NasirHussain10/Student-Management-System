@@ -79,6 +79,50 @@ int getValidMenuChoice() {
     }
 }
 
+// ======================= Student Class =======================
+
+class Student {
+private:
+    string Name, RollNo;
+    float CGPA;
+
+public:
+    Student() : Name(""), RollNo(""), CGPA(0.0) {}
+
+    Student(string name, string rollNo, float cgpa)
+        : Name(move(name)), RollNo(move(rollNo)), CGPA(cgpa) {}
+
+    void setName(const string& name) {
+        Name = name;
+    }
+
+    void setRollNo(const string& rollNo) {
+        RollNo = rollNo;
+    }
+
+    void setCGPA(float cgpa) {
+        CGPA = cgpa;
+    }
+
+    string getName() const {
+        return Name;
+    }
+
+    string getRollNo() const {
+        return RollNo;
+    }
+
+    float getCGPA() const {
+        return CGPA;
+    }
+
+    string toString() const {
+        stringstream ss;
+        ss << Name << " : " << RollNo << " : " << fixed << setprecision(2) << CGPA;
+        return ss.str();
+    }
+};
+
 
 // ======================= Student Management Functions =======================
 // General search function
