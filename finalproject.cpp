@@ -26,6 +26,14 @@ string toLower(const string& str) {
     return lowerStr;
 }
 
+// Helper function to trim spaces
+string trim(const string& str) {
+    size_t first = str.find_first_not_of(' ');
+    if (first == string::npos) return ""; // Empty string
+    size_t last = str.find_last_not_of(' ');
+    return str.substr(first, last - first + 1);
+}
+
 // ======================= Student Management Functions =======================
 // General search function
 void searchStudents(const vector<Student>& students, const string& searchTerm, const string& searchBy) {
