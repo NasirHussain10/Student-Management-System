@@ -9,6 +9,20 @@
 using namespace std;
 
 // ======================= Student Management Functions =======================
+// General search function
+void searchStudents(const vector<Student>& students, const string& searchTerm, const string& searchBy) {
+    bool found = false;
+    for (const auto& student : students) {
+        if ((searchBy == "name" && toLower(student.getName()) == searchTerm) ||
+            (searchBy == "rollno" && toLower(student.getRollNo()) == searchTerm) ||
+            (searchBy == "cgpa" && to_string(student.getCGPA()) == searchTerm)) {
+            cout << student.toString() << endl;
+            found = true;
+        }
+    }
+    if (!found) cout << "Student not found.\n";
+}
+
 // Function to add a new student
 void addStudent(vector<Student>& students) {
     string name = getValidName();
