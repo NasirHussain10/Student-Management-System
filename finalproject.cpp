@@ -35,7 +35,14 @@ void searchByName(const vector<Student>& students) {
     searchStudents(students, name, "name");
 }
 
+// Function to search student by roll number
+void searchByRollNo(const vector<Student>& students) {
+    cout << "Enter RollNo of Student: ";
+    string rollNo;
+    cin >> rollNo;
 
+    searchStudents(students, toLower(trim(rollNo)), "rollno");
+}
 // Function to get a valid menu choice from the user
 int getValidMenuChoice() {
     int choice;
@@ -67,8 +74,8 @@ int getValidMenuChoice() {
         int choice = getValidMenuChoice();
         switch (choice) {
             case 1: addStudent(students); break;
-            case 2:  break;
-            case 3:  break;
+            case 2: searchByName(students); break;
+            case 3: searchByRollNo(students); break;
             case 4:  break;
             case 5:  break;
             case 6:  break;
