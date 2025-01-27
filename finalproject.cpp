@@ -7,6 +7,24 @@
 #include <cctype>
 
 using namespace std;
+// ======================= Helper Functions =======================
+
+// Helper function to validate alphabetic names
+bool isAlphabetic(const string& name) {
+    for (char c : name) {
+        if (!isalpha(c) && c != ' ') { // Allow spaces in names
+            return false;
+        }
+    }
+    return !name.empty();
+}
+
+// Helper function to convert a string to lowercase
+string toLower(const string& str) {
+    string lowerStr = str;
+    transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(), ::tolower);
+    return lowerStr;
+}
 
 // ======================= Student Management Functions =======================
 // General search function
