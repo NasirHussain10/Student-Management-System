@@ -7,6 +7,7 @@
 #include <cctype>
 
 using namespace std;
+
 // ======================= Helper Functions =======================
 
 // Helper function to validate alphabetic names
@@ -123,6 +124,8 @@ public:
     }
 };
 
+// ======================= File Handling Functions =======================
+
 // Function to load students from file into a vector
 vector<Student> loadStudents(const string& filePath) {
     vector<Student> students;
@@ -157,9 +160,9 @@ void saveStudents(const vector<Student>& students, const string& filePath) {
     }
 }
 
-
 // ======================= Student Management Functions =======================
-// General search function
+
+// Generic search function
 void searchStudents(const vector<Student>& students, const string& searchTerm, const string& searchBy) {
     bool found = false;
     for (const auto& student : students) {
@@ -315,9 +318,15 @@ void removeStudent(vector<Student>& students) {
     }
 }
 
-  int main (){
-  	
-  	cout << "Welcome To Student Management System\n";
+// ======================= Main Menu =======================
+
+int main() {
+    string filePath = "Student.txt";
+    vector<Student> students = loadStudents(filePath);
+
+    bool exit = false;
+    while (!exit) {
+        cout << "Welcome To Student Management System\n";
         cout << "************************************\n";
         cout << "1. Add Student.\n";
         cout << "2. Search Student by Name.\n";
@@ -327,7 +336,7 @@ void removeStudent(vector<Student>& students) {
         cout << "6. Display All Students.\n";
         cout << "7. Remove Student.\n";
         cout << "8. Exit.\n";
-        
+
         int choice = getValidMenuChoice();
         switch (choice) {
             case 1: addStudent(students); break;
@@ -339,16 +348,15 @@ void removeStudent(vector<Student>& students) {
             case 7: removeStudent(students); break;
             case 8: exit = true; break;
         }
-        
-    if (!exit) {
+
+        if (!exit) {
             saveStudents(students, filePath);
             cout << "\nPress Enter to continue...";
             cin.ignore();
             cin.get();
         }
     }
-	
-	cout << "Goodbye!\n";
-    return 0;    
 
-  }
+    cout << "Goodbye!\n";
+    return 0;
+}
