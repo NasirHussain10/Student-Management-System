@@ -339,5 +339,13 @@ void removeStudent(vector<Student>& students) {
             case 7: removeStudent(students); break;
             case 8: exit = true; break;
         }
+        
+    if (!exit) {
+            saveStudents(students, filePath);
+            cout << "\nPress Enter to continue...";
+            cin.ignore();
+            cin.get();
+        }
+    }    
 
   }
