@@ -346,6 +346,9 @@ void removeStudent(vector<Student>& students) {
             cin.ignore();
             cin.get();
         }
-    }    
+    }
+	
+	cout << "Goodbye!\n";
+    return 0;    
 
   }
