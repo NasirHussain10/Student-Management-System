@@ -58,6 +58,48 @@ void searchByCGPA(const vector<Student>& students) {
         cout << "No students found with CGPA: " << cgpa << endl;
     }
 }
+
+// Function to update a student's information
+void updateStudent(vector<Student>& students) {
+    cout << "Enter RollNo of Student: ";
+    string rollNo;
+    cin >> rollNo;
+
+    for (auto& student : students) {
+        if (toLower(student.getRollNo()) == toLower(rollNo)) {
+            cout << "Select the detail to update:\n";
+            cout << "1. Name\n2. RollNo\n3. CGPA\n";
+            int updateChoice;
+            cin >> updateChoice;
+
+            switch (updateChoice) {
+                case 1:
+                    student.setName(getValidName());
+                    cout << "Name updated successfully.\n";
+                    break;
+                case 2:
+                    {
+                        string newRollNo;
+                        cout << "Enter new RollNo: ";
+                        cin >> newRollNo;
+                        student.setRollNo(newRollNo);
+                        cout << "RollNo updated successfully.\n";
+                    }
+                    break;
+                case 3:
+                    student.setCGPA(getValidCGPA());
+                    cout << "CGPA updated successfully.\n";
+                    break;
+                default:
+                    cout << "Invalid choice.\n";
+                    break;
+            }
+            return;
+        }
+    }
+    cout << "Student not found.\n";
+}
+
 // Function to get a valid menu choice from the user
 int getValidMenuChoice() {
     int choice;
@@ -92,7 +134,7 @@ int getValidMenuChoice() {
             case 2: searchByName(students); break;
             case 3: searchByRollNo(students); break;
             case 4: searchByCGPA(students); break;
-            case 5:  break;
+            case 5: updateStudent(students); break;
             case 6:  break;
             case 7:  break;
             case 8: exit = true; break;
