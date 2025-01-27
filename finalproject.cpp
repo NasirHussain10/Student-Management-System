@@ -123,6 +123,40 @@ public:
     }
 };
 
+// Function to load students from file into a vector
+vector<Student> loadStudents(const string& filePath) {
+    vector<Student> students;
+    ifstream inFile(filePath);
+    if (!inFile.is_open()) {
+        cout << "No data found in the file. You can add new students.\n";
+        return students;
+    }
+
+    string line;
+    while (getline(inFile, line)) {
+        istringstream iss(line);
+        string name, rollNo;
+        float cgpa;
+        getline(iss, name, ':');
+        getline(iss, rollNo, ':');
+        iss >> cgpa;
+
+        name = trim(name);
+        rollNo = trim(rollNo);
+        students.emplace_back(name, rollNo, cgpa);
+    }
+
+    return students;
+}
+
+// Function to save students to file
+void saveStudents(const vector<Student>& students, const string& filePath) {
+    ofstream outFile(filePath);
+    for (const auto& student : students) {
+        outFile << student.toString() << endl;
+    }
+}
+
 
 // ======================= Student Management Functions =======================
 // General search function
