@@ -100,6 +100,27 @@ void updateStudent(vector<Student>& students) {
     cout << "Student not found.\n";
 }
 
+// Function to display all students
+void displayAll(const vector<Student>& students) {
+    if (students.empty()) {
+        cout << "No students found!\n";
+        return;
+    }
+
+    cout << left << setw(20) << "Name" 
+         << left << setw(15) << "RollNo" 
+         << left << setw(10) << "CGPA" 
+         << "\n";
+    cout << string(45, '-') << "\n";
+
+    for (const auto& student : students) {
+        cout << left << setw(20) << student.getName()
+             << left << setw(15) << student.getRollNo()
+             << left << setw(10) << fixed << setprecision(2) << student.getCGPA()
+             << "\n";
+    }
+}
+
 // Function to get a valid menu choice from the user
 int getValidMenuChoice() {
     int choice;
@@ -135,7 +156,7 @@ int getValidMenuChoice() {
             case 3: searchByRollNo(students); break;
             case 4: searchByCGPA(students); break;
             case 5: updateStudent(students); break;
-            case 6:  break;
+            case 6: displayAll(students); break;
             case 7:  break;
             case 8: exit = true; break;
         }
