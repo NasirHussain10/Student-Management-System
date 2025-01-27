@@ -34,6 +34,21 @@ string trim(const string& str) {
     return str.substr(first, last - first + 1);
 }
 
+// Function to get a valid name from the user
+string getValidName() {
+    string name;
+    while (true) {
+        cout << "Enter Name of Student : ";
+        cin.ignore();
+        getline(cin, name);
+        name = trim(name);
+        if (isAlphabetic(name)) {
+            return name;
+        }
+        cout << "Invalid input! Name should contain only alphabetic characters. Please try again.\n";
+    }
+}
+
 // ======================= Student Management Functions =======================
 // General search function
 void searchStudents(const vector<Student>& students, const string& searchTerm, const string& searchBy) {
