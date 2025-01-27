@@ -24,6 +24,18 @@ void addStudent(vector<Student>& students) {
     cout << "Student added successfully!\n";
 }
 
+// Function to search student by name
+void searchByName(const vector<Student>& students) {
+    cout << "Enter Name of Student: ";
+    string name;
+    cin.ignore();
+    getline(cin, name);
+    name = toLower(trim(name));
+
+    searchStudents(students, name, "name");
+}
+
+
 // Function to get a valid menu choice from the user
 int getValidMenuChoice() {
     int choice;
