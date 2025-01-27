@@ -1,4 +1,11 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <iomanip>
+#include <algorithm>
+#include <cctype>
+
 using namespace std;
 
 // ======================= Student Management Functions =======================
