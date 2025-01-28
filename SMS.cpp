@@ -5,8 +5,18 @@
 #include <cstdlib>
 #include <stdexcept>
 #include <cctype>
+#include <conio.h>
 
 using namespace std;
+
+void clearScreen() {
+    // If Windows, use "cls", if Linux or macOS, use "clear"
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
 
 // *******************
 // Input Validation Functions
@@ -17,7 +27,7 @@ bool isValidCGPA(float& cgpa) {
     if (!(cin >> cgpa) || cgpa < 0.0f || cgpa > 4.0f) {
         cin.clear();
         cin.ignore(1000, '\n');
-        cout << "Invalid CGPA! Please enter a valid CGPA between 0.0 and 4.0.\n";
+        cout << "\t\t\tInvalid CGPA! Please enter a valid CGPA between 0.0 and 4.0.\n";
         return false;
     }
     return true;
@@ -28,7 +38,7 @@ bool isValidNumericInput(int& input) {
     if (!(cin >> input)) {
         cin.clear();
         cin.ignore(1000, '\n');
-        cout << "Invalid input! Please enter a valid number.\n";
+        cout << "\t\t\tInvalid input! Please enter a valid number.\n";
         return false;
     }
     return true;
@@ -39,7 +49,7 @@ bool isValidNumericInput(float& input) {
     if (!(cin >> input)) {
         cin.clear();
         cin.ignore(1000, '\n');
-        cout << "Invalid input! Please enter a valid number.\n";
+        cout << "\t\t\tInvalid input! Please enter a valid number.\n";
         return false;
     }
     return true;
@@ -53,14 +63,14 @@ bool isValidName(const string& name) {
     trimmedName.erase(trimmedName.find_last_not_of(' ') + 1); // Trim trailing spaces
 
     if (trimmedName.empty()) {
-        cout << "Name cannot be empty or just spaces!\n";
+        cout << "\t\t\tName cannot be empty or just spaces!\n";
         return false;
     }
 
     // Check if all characters in the trimmed name are alphabetic or spaces
     for (char ch : trimmedName) {
         if (!(isalpha(ch) || ch == ' ')) {  // Allow spaces in the name
-            cout << "Name must contain only alphabetic characters and spaces!\n";
+            cout << "\t\t\tName must contain only alphabetic characters and spaces!\n";
             return false;
         }
     }
@@ -85,7 +95,7 @@ void addStudent() {
         float cgpa;
 
         // Input student name
-        cout << "Enter Student Name: ";
+        cout << "\t\t\tEnter Student Name: ";
         cin.ignore(); // Clear previous input buffer
         getline(cin, name);
 
@@ -95,9 +105,9 @@ void addStudent() {
         // Input roll number and check for duplicates
         bool rollNumberExists = false;
         do {
-            cout << "Enter Roll Number: ";
+            cout << "\t\t\tEnter Roll Number: ";
             while (!isValidNumericInput(rollNumber)) {
-                cout << "Enter valid Roll Number: ";
+                cout << "\t\t\tEnter valid Roll Number: ";
             }
 
             // Check if the roll number already exists
@@ -118,23 +128,24 @@ void addStudent() {
             inFile.close();
 
             if (rollNumberExists) {
-                cout << "Roll Number already exists! Please enter a unique Roll Number.\n";
+                cout << "\t\t\tRoll Number already exists! Please enter a unique Roll Number.\n";
             }
 
         } while (rollNumberExists); // Loop until a unique roll number is entered
 
         // Input CGPA
-        cout << "Enter CGPA (0.0 to 4.0): ";
+        cout << "\t\t\tEnter CGPA (0.0 to 4.0): ";
         while (!isValidCGPA(cgpa)) {
-            cout << "Enter valid CGPA (0.0 to 4.0): ";
+            cout << "\t\t\tEnter valid CGPA (0.0 to 4.0): ";
         }
 
         // Write student information to the file
         outFile << rollNumber << "|" << name << "|" << cgpa << endl;
-        cout << "Student added successfully!\n";
+        cout << "\t\t\tStudent added successfully!\n";
     } catch (const ios_base::failure& e) {
-        cout << "File I/O error in addStudent(): " << e.what() << endl;
+        cout << "\t\t\tFile I/O error in addStudent(): " << e.what() << endl;
     }
+    getche();
 }
 
 // Function to display all students from the file
@@ -147,8 +158,8 @@ void displayStudents() {
         }
 
         string line;
-        cout << "\nRoll Number | Name                | CGPA\n";
-        cout << "---------------------------------------\n";
+        cout << "\n\t\t\tRoll Number  | Name                 | CGPA\n";
+        cout << "\t\t\t---------------------------------------\n";
 
         while (getline(inFile, line)) {
             size_t delimiter1 = line.find('|');
@@ -161,15 +172,16 @@ void displayStudents() {
             int rollNumber = atoi(rollNumberStr.c_str());
             float marks = atof(marksStr.c_str());
 
-            cout << left << setw(12) << rollNumber << " | "
+            cout << "\t\t\t" << left << setw(12) << rollNumber << " | "
                  << setw(20) << name << " | "
                  << marks << endl;
         }
 
         inFile.close();
     } catch (const ios_base::failure& e) {
-        cout << "File I/O error in displayStudents(): " << e.what() << endl;
+        cout << "\t\t\tFile I/O error in displayStudents(): " << e.what() << endl;
     }
+    getche();
 }
 
 // Function to search for a student by roll number
@@ -182,9 +194,9 @@ void searchStudentByRollNumber() {
         }
 
         int rollNumber;
-        cout << "Enter Roll Number to search: ";
+        cout << "\t\t\tEnter Roll Number to search: ";
         while (!isValidNumericInput(rollNumber)) {
-            cout << "Enter valid Roll Number: ";
+            cout << "\t\t\tEnter valid Roll Number: ";
         }
 
         string line;
@@ -202,23 +214,24 @@ void searchStudentByRollNumber() {
             float marks = atof(marksStr.c_str());
 
             if (fileRollNumber == rollNumber) {
-                cout << "\nStudent Found:\n";
-                cout << "Roll Number: " << fileRollNumber << endl;
-                cout << "Name: " << name << endl;
-                cout << "CGPA: " << marks << endl;
+                cout << "\n\t\t\tStudent Found:\n";
+                cout << "\t\t\tRoll Number: " << fileRollNumber << endl;
+                cout << "\t\t\tName: " << name << endl;
+                cout << "\t\t\tCGPA: " << marks << endl;
                 found = true;
                 break;
             }
         }
 
         if (!found) {
-            cout << "Student with Roll Number " << rollNumber << " not found.\n";
+            cout << "\t\t\tStudent with Roll Number " << rollNumber << " not found.\n";
         }
 
         inFile.close();
     } catch (const ios_base::failure& e) {
-        cout << "File I/O error in searchStudentByRollNumber(): " << e.what() << endl;
+        cout << "\t\t\tFile I/O error in searchStudentByRollNumber(): " << e.what() << endl;
     }
+    getche();
 }
 
 // Function to search for a student by name
@@ -231,7 +244,7 @@ void searchStudentByName() {
         }
 
         string nameToSearch;
-        cout << "Enter Name to search: ";
+        cout << "\t\t\tEnter Name to search: ";
         cin.ignore();  // Clear the input buffer
         getline(cin, nameToSearch);
 
@@ -250,22 +263,23 @@ void searchStudentByName() {
             float marks = atof(marksStr.c_str());
 
             if (name == nameToSearch) {
-                cout << "\nStudent Found:\n";
-                cout << "Roll Number: " << rollNumber << endl;
-                cout << "Name: " << name << endl;
-                cout << "CGPA: " << marks << endl;
+                cout << "\n\t\t\tStudent Found:\n";
+                cout << "\t\t\tRoll Number: " << rollNumber << endl;
+                cout << "\t\t\tName: " << name << endl;
+                cout << "\t\t\tCGPA: " << marks << endl;
                 found = true;
             }
         }
 
         if (!found) {
-            cout << "No students found with the name " << nameToSearch << ".\n";
+            cout << "\t\t\tNo students found with the name " << nameToSearch << ".\n";
         }
 
         inFile.close();
     } catch (const ios_base::failure& e) {
-        cout << "File I/O error in searchStudentByName(): " << e.what() << endl;
+        cout << "\t\t\tFile I/O error in searchStudentByName(): " << e.what() << endl;
     }
+    getche();
 }
 
 // Function to search for a student by CGPA
@@ -278,9 +292,9 @@ void searchStudentByCGPA() {
         }
 
         float cgpaToSearch;
-        cout << "Enter CGPA to search: ";
+        cout << "\t\t\tEnter CGPA to search: ";
         while (!isValidNumericInput(cgpaToSearch)) {
-            cout << "Enter valid CGPA: ";
+            cout << "\t\t\tEnter valid CGPA: ";
         }
 
         string line;
@@ -298,31 +312,32 @@ void searchStudentByCGPA() {
             float marks = atof(marksStr.c_str());
 
             if (marks == cgpaToSearch) {
-                cout << "\nStudent Found:\n";
-                cout << "Roll Number: " << rollNumber << endl;
-                cout << "Name: " << name << endl;
-                cout << "CGPA: " << marks << endl;
+                cout << "\n\t\t\tStudent Found:\n";
+                cout << "\t\t\tRoll Number: " << rollNumber << endl;
+                cout << "\t\t\tName: " << name << endl;
+                cout << "\t\t\tCGPA: " << marks << endl;
                 found = true;
             }
         }
 
         if (!found) {
-            cout << "No students found with CGPA " << cgpaToSearch << ".\n";
+            cout << "\t\t\tNo students found with CGPA " << cgpaToSearch << ".\n";
         }
 
         inFile.close();
     } catch (const ios_base::failure& e) {
-        cout << "File I/O error in searchStudentByCGPA(): " << e.what() << endl;
+        cout << "\t\t\tFile I/O error in searchStudentByCGPA(): " << e.what() << endl;
     }
+    getche();
 }
 
 // Function to delete a student by roll number
 void deleteStudent() {
     try {
         int rollNumber;
-        cout << "Enter Roll Number to delete: ";
+        cout << "\t\t\tEnter Roll Number to delete: ";
         while (!isValidNumericInput(rollNumber)) {
-            cout << "Enter valid Roll Number: ";
+            cout << "\t\t\tEnter valid Roll Number: ";
         }
 
         ifstream inFile("students.txt");
@@ -353,22 +368,23 @@ void deleteStudent() {
         if (found) {
             remove("students.txt"); // Delete the original file
             rename("temp.txt", "students.txt"); // Rename temp file to the original
-            cout << "Student with Roll Number " << rollNumber << " deleted successfully.\n";
+            cout << "\t\t\tStudent with Roll Number " << rollNumber << " deleted successfully.\n";
         } else {
-            cout << "Student with Roll Number " << rollNumber << " not found.\n";
+            cout << "\t\t\tStudent with Roll Number " << rollNumber << " not found.\n";
         }
     } catch (const ios_base::failure& e) {
-        cout << "File I/O error in deleteStudent(): " << e.what() << endl;
+        cout << "\t\t\tFile I/O error in deleteStudent(): " << e.what() << endl;
     }
+    getche();
 }
 
 // Function to update a student by roll number
 void updateStudent() {
     try {
         int rollNumber;
-        cout << "Enter Roll Number to update: ";
+        cout << "\t\t\tEnter Roll Number to update: ";
         while (!isValidNumericInput(rollNumber)) {
-            cout << "Enter valid Roll Number: ";
+            cout << "\t\t\tEnter valid Roll Number: ";
         }
 
         ifstream inFile("students.txt");
@@ -391,19 +407,20 @@ void updateStudent() {
                 string name;
                 float cgpa;
 
-                // Input new name and CGPA
-                cout << "Enter new name: ";
-                cin.ignore();  // Clear input buffer
+                // Get the new name and CGPA
+                cout << "\t\t\tEnter new Name: ";
+                cin.ignore(); // Clear input buffer
                 getline(cin, name);
-                cout << "Enter new CGPA (0.0 to 4.0): ";
+                cout << "\t\t\tEnter new CGPA (0.0 to 4.0): ";
                 while (!isValidCGPA(cgpa)) {
-                    cout << "Enter valid CGPA (0.0 to 4.0): ";
+                    cout << "\t\t\tEnter valid CGPA (0.0 to 4.0): ";
                 }
 
-                // Write the updated information to temp file
+                // Write the updated student information to the temp file
                 tempFile << rollNumber << "|" << name << "|" << cgpa << endl;
             } else {
-                tempFile << line << endl;  // Copy the line to the temp file unchanged
+                // Write the original student info to the temp file if no update
+                tempFile << line << endl;
             }
         }
 
@@ -412,69 +429,167 @@ void updateStudent() {
 
         if (found) {
             remove("students.txt"); // Delete the original file
-            rename("temp.txt", "students.txt"); // Rename temp file to the original
-            cout << "Student with Roll Number " << rollNumber << " updated successfully.\n";
+            rename("temp.txt", "students.txt"); // Rename the temp file to original
+            cout << "\t\t\tStudent with Roll Number " << rollNumber << " updated successfully.\n";
         } else {
-            cout << "Student with Roll Number " << rollNumber << " not found.\n";
+            cout << "\t\t\tStudent with Roll Number " << rollNumber << " not found.\n";
         }
     } catch (const ios_base::failure& e) {
-        cout << "File I/O error in updateStudent(): " << e.what() << endl;
+        cout << "\t\t\tFile I/O error in updateStudent(): " << e.what() << endl;
     }
+    getche();
 }
 
-// *******************
-// Main Function
-// *******************
-
-int main() {
+// Function to handle menu options
+void menu() {
     int choice;
-
+    
     do {
-        cout << "\n********** Student Management System **********\n";
-        cout << "1. Add Student\n";
-        cout << "2. Display All Students\n";
-        cout << "3. Search Student by Roll Number\n";
-        cout << "4. Search Student by Name\n";
-        cout << "5. Search Student by CGPA\n";
-        cout << "6. Delete Student\n";
-        cout << "7. Update Student\n";
-        cout << "8. Exit\n";
-        cout << "Enter your choice: ";
-
-        if (!isValidNumericInput(choice)) {
-            cout << "Please enter a valid menu option.\n";
-            continue;
+    	clearScreen();
+        cout << "\n\t\t\t=== Student Management System ===\n";
+        cout << "\t\t\t1. Add Student\n";
+        cout << "\t\t\t2. Display Students\n";
+        cout << "\t\t\t3. Search Student by Roll Number\n";
+        cout << "\t\t\t4. Search Student by Name\n";
+        cout << "\t\t\t5. Search Student by CGPA\n";
+        cout << "\t\t\t6. Delete Student\n";
+        cout << "\t\t\t7. Update Student\n";
+        cout << "\t\t\t8. Exit\n";
+        cout << "\t\t\tEnter your choice: ";
+        while (!isValidNumericInput(choice)) {
+            cout << "\t\t\tEnter valid choice: ";
         }
 
         switch (choice) {
-            case 1:
-                addStudent();
-                break;
-            case 2:
-                displayStudents();
-                break;
-            case 3:
-                searchStudentByRollNumber();
-                break;
-            case 4:
-                searchStudentByName();
-                break;
-            case 5:
-                searchStudentByCGPA();
-                break;
-            case 6:
-                deleteStudent();
-                break;
-            case 7:
-                updateStudent();
-                break;
-            case 8:
-                cout << "Exiting program. Goodbye!\n";
-                break;
-            default:
-                cout << "Invalid choice! Please select a valid option.\n";
+            case 1: addStudent(); break;
+            case 2: displayStudents();  break;
+            case 3: searchStudentByRollNumber(); break;
+            case 4: searchStudentByName();  break;
+            case 5: searchStudentByCGPA();  break;
+            case 6: deleteStudent();  break;
+            case 7: updateStudent();  break;
+            case 8: cout << "\t\t\tExiting program...\n"; break;
+            default: cout << "\t\t\tInvalid choice! Try again.\n"; break;
         }
     } while (choice != 8);
+}
+
+const string USER_CREDENTIALS_FILE = "credentials.txt";
+
+// *******************
+// User Authentication Functions
+// *******************
+
+// Function to check if the input is a valid username (alphabetic and non-empty)
+bool isValidUsername(const string& username) {
+    for (char ch : username) {
+        if (!(isalpha(ch))) {
+            return false;
+        }
+    }
+    return !username.empty();
+}
+
+// Function to check if the input is a valid password (non-empty)
+bool isValidPassword(const string& password) {
+    return !password.empty();
+}
+
+// Function to sign up (create a new user)
+void signup() {
+    string username, password;
+
+    cout << "\t\t\tEnter new username: ";
+    cin >> username;
+    while (!isValidUsername(username)) {
+        cout << "\t\t\tInvalid username! Username must be alphabetic and non-empty. Try again: ";
+        cin >> username;
+    }
+
+    cout << "\t\t\tEnter new password: ";
+    cin >> password;
+    while (!isValidPassword(password)) {
+        cout << "\t\t\tInvalid password! Password cannot be empty. Try again: ";
+        cin >> password;
+    }
+
+    // Save the credentials to the file
+    ofstream outFile(USER_CREDENTIALS_FILE, ios::app);
+    if (!outFile) {
+        cout << "\t\t\tError opening credentials file for writing.\n";
+        return;
+    }
+    outFile << username << "|" << password << endl;
+    outFile.close();
+
+    cout << "\t\t\tSignup successful! You can now login.\n";
+}
+
+// Function to login (authenticate user)
+bool login() {
+    string username, password;
+
+    cout << "\t\t\tEnter username: ";
+    cin >> username;
+
+    cout << "\t\t\tEnter password: ";
+    cin >> password;
+
+    ifstream inFile(USER_CREDENTIALS_FILE);
+    if (!inFile) {
+        cout << "\t\t\tError opening credentials file for reading.\n";
+        return false;
+    }
+
+    string fileUsername, filePassword;
+    while (getline(inFile, fileUsername, '|') && getline(inFile, filePassword)) {
+        if (fileUsername == username && filePassword == password) {
+            inFile.close();
+            return true;
+        }
+    }
+
+    inFile.close();
+    cout << "\t\t\tInvalid username or password. Please try again.\n";
+    return false;
+}
+
+// *******************
+// Main Menu with Authentication
+// *******************
+
+int main() {
+    int option;
+
+    cout << "\t\t\t********** Welcome to the Student Management System **********\n";
+    cout << "\t\t\t1. Sign Up\n";
+    cout << "\t\t\t2. Login\n";
+    cout << "\t\t\t3. Exit\n";
+    cout << "\t\t\tEnter your option: ";
+    
+    while (!(cin >> option)) {
+        cout << "\t\t\tPlease enter a valid option: ";
+        cin.clear();
+        cin.ignore(1000, '\n');
+    }
+
+    switch (option) {
+        case 1:
+            signup();
+            break;
+        case 2:
+            if (login()) {
+                menu(); // Proceed to the main menu if login is successful
+            } else {
+                cout << "\t\t\tLogin failed. Exiting program.\n";
+            }
+            break;
+        case 3:
+            cout << "\t\t\tExiting program. Goodbye!\n";
+            return 0;
+        default:
+            cout << "\t\t\tInvalid option! Please select a valid option.\n";
+    }
 
     return 0;
 }
