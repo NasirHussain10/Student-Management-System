@@ -2,9 +2,12 @@
 #include <fstream>
 #include <string>
 #include <iomanip>
+#include <cstdlib>
 #include <stdexcept>
 #include <cctype>
 #include <conio.h>
+#include <limits>
+
 
 using namespace std;
 
@@ -23,34 +26,64 @@ void clearScreen() {
 
 // Function to check if the input is a valid CGPA (between 0.0 and 4.0)
 bool isValidCGPA(float& cgpa) {
-    if (!(cin >> cgpa) || cgpa < 0.0f || cgpa > 4.0f) {
-        cin.clear();
-        cin.ignore(1000, '\n');
+    string input;
+    cin >> input;
+    
+    // converting the input to a float and check if it's fully numeric
+    char* end;
+    cgpa = strtof(input.c_str(), &end);
+    
+    // If end is not at the end of the string, input contains invalid characters
+    if (*end != '\0' || cgpa < 0.0f || cgpa > 4.0f) {
+        cin.clear();  // Clear error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Discard bad input
         cout << "\t\t\tInvalid CGPA! Please enter a valid CGPA between 0.0 and 4.0.\n";
         return false;
     }
+    
     return true;
 }
+
 
 // Function to check if the input is a valid integer
 bool isValidNumericInput(int& input) {
-    if (!(cin >> input)) {
-        cin.clear();
-        cin.ignore(1000, '\n');
-        cout << "\t\t\tInvalid input! Please enter a valid number.\n";
+    string strInput;
+    cin >> strInput;  // Read input as string
+
+    // Check if all characters are digits (allow negative sign at the start)
+    int startIndex = (strInput[0] == '-') ? 1 : 0; // Allow negative numbers
+    for (size_t i = startIndex; i < strInput.length(); i++) {
+        if (!isdigit(strInput[i])) {
+            cout << "\t\t\tInvalid input! Please enter a valid number.\n";
+            return false;
+        }
+    }
+
+    // Convert to integer safely
+    try {
+        input = stoi(strInput);
+    } catch (const out_of_range&) {
+        cout << "\t\t\tNumber too large! Please enter a valid number.\n";
         return false;
     }
+
     return true;
 }
 
-// Function to check if the input is a valid float
+//function to check if the input is a valid float
 bool isValidNumericInput(float& input) {
-    if (!(cin >> input)) {
-        cin.clear();
-        cin.ignore(1000, '\n');
+    string strInput;
+    cin >> strInput;  // Read input as a string
+
+    char* end;  // Pointer to detect invalid characters
+    input = strtof(strInput.c_str(), &end);  // Convert to float
+
+    // If there are any non-numeric characters after the number, it's invalid
+    if (*end != '\0') { 
         cout << "\t\t\tInvalid input! Please enter a valid number.\n";
         return false;
     }
+
     return true;
 }
 
@@ -144,6 +177,7 @@ void addStudent() {
     } catch (const ios_base::failure& e) {
         cout << "\t\t\tFile I/O error in addStudent(): " << e.what() << endl;
     }
+    cout<<"\n\n\t\t\tPress Enter to go to main menu!"<<endl;
     getche();
 }
 
@@ -180,6 +214,7 @@ void displayStudents() {
     } catch (const ios_base::failure& e) {
         cout << "\t\t\tFile I/O error in displayStudents(): " << e.what() << endl;
     }
+    cout<<"\n\n\t\t\tPress Enter to go to main menu!"<<endl;
     getche();
 }
 
@@ -223,13 +258,14 @@ void searchStudentByRollNumber() {
         }
 
         if (!found) {
-            cout << "\t\t\tStudent with Roll Number " << rollNumber << " not found.\n";
+            cout << "\t\t\tStudent with Roll Number " << rollNumber << " not found.\n"<<endl;
         }
 
         inFile.close();
     } catch (const ios_base::failure& e) {
         cout << "\t\t\tFile I/O error in searchStudentByRollNumber(): " << e.what() << endl;
     }
+    cout<<"\n\n\t\t\tPress Enter to go to main menu!"<<endl;
     getche();
 }
 
@@ -278,6 +314,7 @@ void searchStudentByName() {
     } catch (const ios_base::failure& e) {
         cout << "\t\t\tFile I/O error in searchStudentByName(): " << e.what() << endl;
     }
+        cout<<"\n\n\t\t\tPress Enter to go to main menu!"<<endl;
     getche();
 }
 
@@ -327,6 +364,7 @@ void searchStudentByCGPA() {
     } catch (const ios_base::failure& e) {
         cout << "\t\t\tFile I/O error in searchStudentByCGPA(): " << e.what() << endl;
     }
+    cout<<"\n\n\t\t\tPress Enter to go to main menu!"<<endl;
     getche();
 }
 
@@ -365,8 +403,8 @@ void deleteStudent() {
         tempFile.close();
 
         if (found) {
-            remove("students.txt"); // Delete the original file
-            rename("temp.txt", "students.txt"); // Rename temp file to the original
+            remove("students.xlsx"); // Delete the original file
+            rename("temp.xlsx", "students.txt"); // Rename temp file to the original
             cout << "\t\t\tStudent with Roll Number " << rollNumber << " deleted successfully.\n";
         } else {
             cout << "\t\t\tStudent with Roll Number " << rollNumber << " not found.\n";
@@ -374,6 +412,7 @@ void deleteStudent() {
     } catch (const ios_base::failure& e) {
         cout << "\t\t\tFile I/O error in deleteStudent(): " << e.what() << endl;
     }
+        cout<<"\n\n\t\t\tPress Enter to go to main menu!"<<endl;
     getche();
 }
 
@@ -427,8 +466,8 @@ void updateStudent() {
         tempFile.close();
 
         if (found) {
-            remove("students.txt"); // Delete the original file
-            rename("temp.txt", "students.txt"); // Rename the temp file to original
+            remove("students.xlsx"); // Delete the original file
+            rename("temp.xlsx", "students.xlsx"); // Rename the temp file to original
             cout << "\t\t\tStudent with Roll Number " << rollNumber << " updated successfully.\n";
         } else {
             cout << "\t\t\tStudent with Roll Number " << rollNumber << " not found.\n";
@@ -436,6 +475,7 @@ void updateStudent() {
     } catch (const ios_base::failure& e) {
         cout << "\t\t\tFile I/O error in updateStudent(): " << e.what() << endl;
     }
+        cout<<"\n\n\t\t\tPress Enter to go to main menu!"<<endl;
     getche();
 }
 
@@ -468,7 +508,7 @@ void menu() {
             case 6: deleteStudent();  break;
             case 7: updateStudent();  break;
             case 8: cout << "\t\t\tExiting program...\n"; break;
-            default: cout << "\t\t\tInvalid choice! Try again.\n"; break;
+            default: cout << "\t\t\tInvalid choice! press Enter to try again.\n"; getche(); break;
         }
     } while (choice != 8);
 }
@@ -557,38 +597,48 @@ bool login() {
 // Main Menu with Authentication
 // *******************
 
+
+
 int main() {
     int option;
 
     cout << "\t\t\t********** Welcome to the Student Management System **********\n";
-    cout << "\t\t\t1. Sign Up\n";
-    cout << "\t\t\t2. Login\n";
-    cout << "\t\t\t3. Exit\n";
-    cout << "\t\t\tEnter your option: ";
     
-    while (!(cin >> option)) {
-        cout << "\t\t\tPlease enter a valid option: ";
-        cin.clear();
-        cin.ignore(1000, '\n');
-    }
+    // Repeatedly prompt the user for valid input until it's correct
+    do {
+        cout << "\t\t\t1. Sign Up\n";
+        cout << "\t\t\t2. Login\n";
+        cout << "\t\t\t3. Exit\n";
+        cout << "\t\t\tEnter your option: ";
+        
+        // Ensure the option is valid (numeric) and in the correct range
+        while (!isValidNumericInput(option) || option < 1 || option > 3) {
+            cout << "\t\t\tPlease enter a valid option (1, 2, or 3): ";
+            // Clear input buffer to prevent infinite loop in case of invalid input
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
 
-    switch (option) {
-        case 1:
-            signup();
-            break;
-        case 2:
-            if (login()) {
-                menu(); // Proceed to the main menu if login is successful
-            } else {
-                cout << "\t\t\tLogin failed. Exiting program.\n";
-            }
-            break;
-        case 3:
-            cout << "\t\t\tExiting program. Goodbye!\n";
-            return 0;
-        default:
-            cout << "\t\t\tInvalid option! Please select a valid option.\n";
-    }
+        // Process the choice based on valid input
+        switch (option) {
+            case 1:
+                signup();
+                break;
+            case 2:
+                if (login()) {
+                    menu(); // Proceed to the main menu if login is successful
+                } else {
+                    cout << "\t\t\tLogin failed. Exiting program.\n";
+                }
+                break;
+            case 3:
+                cout << "\t\t\tExiting program. Goodbye!\n";
+                return 0;
+            default:
+                // This case will never be reached because the range is validated above
+                cout << "\t\t\tInvalid option! Please select a valid option.\n";
+        }
+    } while (option < 1 || option > 3); // Keep asking until the user enters a valid option
 
     return 0;
 }
